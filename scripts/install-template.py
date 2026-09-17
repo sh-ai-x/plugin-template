@@ -124,8 +124,22 @@ def validate_generated(destination: Path, plugin_name: str, plugin_version: str)
         if data.get("version") != plugin_version:
             raise ValueError(f"manifest version mismatch: {manifest_path}")
     for required in (
+        destination / "CLAUDE.md",
+        destination / "AGENTS.md",
+        destination / "GEMINI.md",
         destination / "skills" / "example-workflow" / "SKILL.md",
+        destination / "skills" / "README.md",
         destination / "hooks" / "hooks.json",
+        destination / "hooks" / "index.md",
+        destination / "worktrees" / "README.md",
+        destination / "mcp" / "README.md",
+        destination / "rules" / "index.md",
+        destination / "workflows" / "README.md",
+        destination / "agents" / "README.md",
+        destination / "scripts" / "README.md",
+        destination / "iron-laws" / "index.md",
+        destination / "guidelines" / "index.md",
+        destination / "docs" / "CODEBASE-MAP.md",
         destination / ".mcp.json",
         destination / "mcp.json",
         destination / ".agents" / "plugins.json",

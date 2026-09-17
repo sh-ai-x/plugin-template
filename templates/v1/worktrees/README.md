@@ -12,3 +12,8 @@ provide scripts and hooks that observe a worktree, but it must not assume a fixe
 Claude Code and Codex can both run isolated worktree sessions, but their orchestration and checkout
 locations differ. Treat `cwd` from hook input as the current project root and use Git commands only
 after checking that the target is a repository.
+
+Codex-managed worktrees may live under `$CODEX_HOME/worktrees`; Claude Code may use a repository
+worktree or a configured worktree directory. Resolve paths at runtime and keep the plugin usable from
+any checkout. Use `.worktreeinclude` only for non-secret setup files that should be copied into a
+managed worktree.

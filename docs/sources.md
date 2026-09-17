@@ -14,6 +14,6 @@ The v1 layout was derived from these primary references, checked on 2026-09-17:
 - [Claude Code MCP](https://code.claude.com/docs/en/mcp)
 
 The Antigravity (`agy`) adapter follows the existing compatible plugin pattern in the local
-`obsidian_organize` worktree: a root `plugin.json`, `.agents/plugins.json`, `.agents/skills.json`,
-and explicit global/workspace installation modes. agy's local integration is kept as an adapter because
-it does not share Claude Code or Codex's marketplace contract.
+`obsidian_organize` worktree: a root `plugin.json`, `.agents/plugins.json`, and `.agents/skills.json`.
+agy's local integration is kept as an adapter because it does not share Claude Code or Codex's
+marketplace contract. The template does not add a separate AGY installer.

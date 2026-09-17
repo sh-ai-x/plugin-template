@@ -1,8 +1,8 @@
 # Claude Code + Codex + Antigravity Plugin Template
 
 Claude Code, Codex, and Google Antigravity (`agy`)에서 함께 사용할 플러그인을 만들기 위한
-버전 관리형 템플릿 저장소입니다. 공통 `hooks`, `skills`, workflows, worktrees, MCP와
-namespace를 한 번 정의하고, 호스트별 manifest·설치 adapter만 분리합니다.
+버전 관리형 템플릿 저장소입니다. 공통 `hooks`, `skills`, workflows, worktrees, MCP, rules와
+namespace를 한 번 정의하고, 호스트별 manifest만 얇은 adapter로 둡니다.
 
 첫 초기화 커밋은 [GitHub의 `main` 브랜치](https://github.com/sh-ai-x/plugin-template)에
 push되어 있습니다.
@@ -32,7 +32,9 @@ python3 scripts/install-template.py v1 my-plugin \
 
 ```text
 my-plugin/
-├── plugin.json                 # Portable Agent Plugins manifest + AGY identity
+├── CLAUDE.md / AGENTS.md       # Claude/Codex 공통 instructions pointer
+├── GEMINI.md                   # Antigravity instructions pointer
+├── plugin.json                 # Portable Agent Plugins manifest
 ├── .claude-plugin/
 │   ├── plugin.json             # Claude Code manifest
 │   └── marketplace.json        # Claude marketplace entry
@@ -40,31 +42,39 @@ my-plugin/
 ├── .agents/                    # AGY registration examples
 ├── skills/                     # Shared workflow skills
 ├── hooks/                      # Shared lifecycle config and scripts
+├── worktrees/                  # Worktree policy
+├── mcp/                        # MCP policy and server notes
+├── rules/                      # Shared operating rules
+├── workflows/                  # Workflow runbooks
+├── agents/                     # Optional agent definitions
+├── scripts/                    # Deterministic project helpers
+├── iron-laws/ / guidelines/    # Invariants and working guidelines
+├── docs/                       # Codebase map and scope notes
 ├── mcp.json                    # Portable MCP configuration
 ├── .mcp.json                   # Claude-compatible MCP configuration
-├── worktrees/                  # Worktree policy
-└── bin/install-agy.sh          # Optional AGY installer
+└── .worktreeinclude            # Files copied into managed worktrees
 ```
 
-공통 구현은 root의 `skills/`, `hooks/`, `mcp.json`에 두고, 호스트별 차이는 adapter manifest와
-설치 스크립트에서만 처리합니다. `CLAUDE.md`나 `AGENTS.md`를 plugin context로 오해하지 않도록
-플러그인 instructions는 `skills/<name>/SKILL.md` 안에 둡니다.
+공통 구현은 root의 `skills/`, `hooks/`, `mcp.json`에 두고, 호스트별 차이는 adapter manifest에서만
+처리합니다. `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`는 세션 진입점에서 공통 문서로 안내하는 짧은
+pointer이며, 실제 skill instructions는 `skills/<name>/SKILL.md` 안에 둡니다.
 
 ## Host compatibility
 
 | Concern | Claude Code | Codex | Antigravity (`agy`) |
 |---|---|---|---|
-| Identity | `.claude-plugin/plugin.json` | root `plugin.json` + `.codex-plugin/plugin.json` | root `plugin.json` |
+| Identity | `.claude-plugin/plugin.json` | root `plugin.json` + `.codex-plugin/plugin.json` | root `plugin.json` + `.agents/` |
 | Skills | root `skills/<name>/SKILL.md` | same | same via `.agents/skills.json` |
 | Hooks | `hooks/hooks.json` | same default path; review/trust before enable | adapter/optional |
 | MCP | `.mcp.json` | portable `mcp.json` | host-specific registration if needed |
 | Namespace | `/plugin:skill` style | plugin manifest + skill directory | plugin/skill paths |
-| Install | `claude plugin marketplace add/install` | local marketplace + `codex plugin add` | `bin/install-agy.sh` |
+| Install | `claude plugin marketplace add/install` | local marketplace + `codex plugin add` | Host discovery/registration using `.agents/` |
 | Update | marketplace update, then plugin update | cachebuster + reinstall; new thread | pull source or re-register workspace |
 
-`agy` support is intentionally an adapter: its registration format is not the Claude/Codex
-marketplace contract. The generated `bin/install-agy.sh` supports both global symlink installation and
-workspace-local `.agents/` registration.
+`agy` support is intentionally an adapter: its registration format is not the Claude/Codex marketplace
+contract. The template supplies `.agents/plugins.json` and `.agents/skills.json` examples that point at
+the same root and `skills/` tree. It does not generate a host-specific installer; registration remains
+owned by the consuming workspace and its AGY tooling.
 
 ## Design decisions and sources
 
@@ -75,7 +85,8 @@ workspace-local `.agents/` registration.
 The v1 template follows the official guidance that skills are self-contained `SKILL.md` directories,
 MCP is optional, hooks are lifecycle configuration, and plugin packages should keep portable files at
 the root. Claude Code and Codex both cache or copy installed plugins, so generated files do not rely on
-paths outside the plugin root.
+paths outside the plugin root. The generator is the only installer: choose a template version, then give
+it the new plugin name.
 
 ## Verify
 

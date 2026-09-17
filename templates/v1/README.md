@@ -8,7 +8,9 @@ Antigravity (`agy`). It was generated from the `v1` template of the
 
 ```text
 __PLUGIN_NAME__/
-├── plugin.json                 # Portable Agent Plugins manifest and AGY identity
+├── CLAUDE.md / AGENTS.md       # Claude/Codex shared instructions pointer
+├── GEMINI.md                   # Antigravity shared instructions pointer
+├── plugin.json                 # Portable Agent Plugins manifest
 ├── .claude-plugin/
 │   ├── plugin.json             # Claude Code manifest
 │   └── marketplace.json        # Single-plugin Claude marketplace
@@ -19,7 +21,13 @@ __PLUGIN_NAME__/
 ├── mcp.json                    # Portable MCP schema
 ├── .mcp.json                   # Claude-compatible MCP schema
 ├── worktrees/                  # Worktree policy and integration notes
-├── bin/install-agy.sh          # Optional AGY global/workspace installer
+├── mcp/                        # MCP policy and server notes
+├── rules/                      # Shared operating rules
+├── workflows/                  # Workflow runbooks
+├── agents/                     # Optional agent definitions
+├── scripts/                    # Deterministic project helpers
+├── iron-laws/ / guidelines/    # Invariants and working guidelines
+├── docs/                       # Codebase map and scope notes
 └── LICENSE                     # MIT
 ```
 
@@ -38,7 +46,8 @@ host-neutral, such as `skills/example-workflow/`.
 | Antigravity (`agy`) | The root manifest and `.agents/` entries point to the same `skills/` tree. |
 
 Avoid embedding `claude-`, `codex-`, or `agy-` in skill names. Add host-specific behavior only in
-adapter manifests, hook matchers, or installation scripts.
+adapter manifests or hook matchers. The plugin name is the namespace; Claude presents skills in the
+`__PLUGIN_NAME__:skill-name` form while other hosts discover the same directory.
 
 ## Add a workflow
 
@@ -106,21 +115,10 @@ new skills and MCP tools are loaded.
 
 ### Antigravity (`agy`)
 
-Use the included adapter when the `agy` CLI is available:
-
-```bash
-bin/install-agy.sh --global
-bin/install-agy.sh --check
-```
-
-For one workspace only:
-
-```bash
-bin/install-agy.sh /path/to/workspace
-```
-
-Global mode uses symlinks, so pulling a new commit updates the linked source. Workspace mode updates
-the `.agents/` registration while preserving unrelated entries.
+The generated root manifest and `.agents/plugins.json` / `.agents/skills.json` point to the same
+plugin and `skills/` tree. Use the AGY host's normal discovery or registration mechanism for the
+consuming workspace. There is no separate AGY installer in this template; pulling the source and
+refreshing that registration is the update path.
 
 ## Worktrees
 
@@ -135,5 +133,5 @@ into the installed plugin directory. See `worktrees/README.md` and `.worktreeinc
 - Validate JSON after editing manifests.
 - Test `claude --plugin-dir .` before publishing.
 - Review and trust Codex plugin hooks before enabling them.
-- Test the AGY adapter with `--dry-run` before a global install.
+- Verify that the AGY registration points to the generated plugin root and shared `skills/` tree.
 - Bump the plugin semantic version for distributed changes.

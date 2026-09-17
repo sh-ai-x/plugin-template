@@ -1,6 +1,7 @@
 ---
 name: example-workflow
 description: Use when a user asks for the workflow this plugin is meant to automate. Replace this description with the user goal, trigger conditions, and expected result.
+alpha: analysis
 ---
 
 # Example workflow

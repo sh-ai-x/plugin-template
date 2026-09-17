@@ -26,7 +26,23 @@ def test_generates_v1_plugin_with_consistent_manifests(tmp_path: Path) -> None:
 
     destination = tmp_path / "example-plugin"
     assert (destination / "skills/example-workflow/SKILL.md").is_file()
-    assert (destination / "bin/install-agy.sh").stat().st_mode & 0o111
+    for relative in (
+        "CLAUDE.md",
+        "AGENTS.md",
+        "GEMINI.md",
+        "hooks/index.md",
+        "worktrees/README.md",
+        "mcp/README.md",
+        "rules/index.md",
+        "workflows/README.md",
+        "agents/README.md",
+        "scripts/README.md",
+        "iron-laws/index.md",
+        "guidelines/index.md",
+        "docs/CODEBASE-MAP.md",
+    ):
+        assert (destination / relative).is_file()
+    assert not (destination / "bin").exists()
 
     for relative in (
         "plugin.json",

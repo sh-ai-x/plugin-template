@@ -1,5 +1,7 @@
 # Hooks
 
+See [`index.md`](index.md) for the shared hook contract.
+
 `hooks/hooks.json` is intentionally shared by Claude Code and Codex. The event schema is common,
 while the hook environment is adapted by the host:
 

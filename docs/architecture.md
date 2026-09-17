@@ -8,10 +8,12 @@ private configuration.
 The package root owns the portable identity and reusable implementation:
 
 - `plugin.json`: portable Agent Plugins manifest and the AGY identity surface
+- `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`: short host-facing pointers into shared project docs
 - `skills/<name>/SKILL.md`: workflow instructions and their local references/scripts
 - `mcp.json`: portable MCP configuration
 - `hooks/`: common lifecycle configuration and deterministic scripts
 - `worktrees/`: documentation and optional helpers; no implicit destructive cleanup
+- `mcp/`, `rules/`, `workflows/`, `agents/`, `scripts/`: shared extension and operating surfaces
 
 The host adapters are deliberately thin:
 
@@ -20,7 +22,7 @@ The host adapters are deliberately thin:
 | Claude Code | `.claude-plugin/plugin.json` | Claude manifest, namespace, and marketplace metadata |
 | Codex | `.codex-plugin/plugin.json` | Compatibility metadata for the Codex plugin loader |
 | Codex/ChatGPT | `extensions.com.openai` in `plugin.json` | Portable OpenAI presentation and hook wiring |
-| Antigravity (`agy`) | `.agents/plugins.json`, `.agents/skills.json`, `bin/install-agy.sh` | Workspace/global registration observed in the existing agy-compatible plugin pattern |
+| Antigravity (`agy`) | root `plugin.json`, `.agents/plugins.json`, `.agents/skills.json` | Registration remains owned by the consuming workspace; the template does not add a host-specific installer |
 
 ## Namespace choice
 
@@ -65,5 +67,5 @@ Runtime updates differ by host:
   cache keys.
 - Codex installs from a local marketplace and uses a cachebuster suffix for local iteration before
   reinstalling.
-- agy global mode uses a symlink, so the source checkout update is the update path; workspace mode
-  re-registers the source path idempotently.
+- agy registration points at the source root and shared `skills/` tree; update means pulling the source
+  and refreshing the host's registration when required.
