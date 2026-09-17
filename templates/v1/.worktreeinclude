@@ -1,0 +1,3 @@
+# Copy only non-secret setup files into Codex-managed worktrees when needed.
+# Never add .env or credentials here.
+# .env.example

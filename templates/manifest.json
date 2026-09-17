@@ -1,0 +1,11 @@
+{
+  "default": "v1",
+  "templates": [
+    {
+      "name": "v1",
+      "path": "templates/v1",
+      "status": "stable",
+      "description": "Portable Claude Code, Codex, and Google Antigravity plugin layout"
+    }
+  ]
+}

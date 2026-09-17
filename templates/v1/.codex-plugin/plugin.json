@@ -1,0 +1,25 @@
+{
+  "name": "__PLUGIN_NAME__",
+  "version": "__PLUGIN_VERSION__",
+  "description": "__PLUGIN_DESCRIPTION__",
+  "author": {
+    "name": "__AUTHOR_NAME__",
+    "url": "__AUTHOR_URL__"
+  },
+  "homepage": "__HOMEPAGE__",
+  "repository": "__REPOSITORY__",
+  "license": "MIT",
+  "keywords": ["agent-plugin", "skills", "workflow"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "__PLUGIN_DISPLAY_NAME__",
+    "shortDescription": "__PLUGIN_DESCRIPTION__",
+    "longDescription": "__PLUGIN_DESCRIPTION__",
+    "developerName": "__AUTHOR_NAME__",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Use __PLUGIN_DISPLAY_NAME__ to run its example workflow."
+    ]
+  }
+}
