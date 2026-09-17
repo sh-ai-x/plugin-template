@@ -1,0 +1,27 @@
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime/build output
+dist/
+build/
+coverage/
+*.log
+
+# Generated template test projects
+.template-test/
+.tmp/
+
+# Local worktrees and agent state
+.worktrees/
+.claude/local/
+.codex/local/
