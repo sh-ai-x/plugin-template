@@ -1,32 +1,91 @@
-# Claude Code + Codex Plugin Template
+# Claude Code + Codex + Antigravity Plugin Template
 
-Claude Code와 Codex에서 함께 사용할 수 있는 플러그인을 만들기 위한 버전 관리형 템플릿 저장소입니다.
+Claude Code, Codex, and Google Antigravity (`agy`)에서 함께 사용할 플러그인을 만들기 위한
+버전 관리형 템플릿 저장소입니다. 공통 `hooks`, `skills`, workflows, worktrees, MCP와
+namespace를 한 번 정의하고, 호스트별 manifest·설치 adapter만 분리합니다.
 
-이 저장소는 공통 `hooks`, `skills`, `worktrees`, `MCP`, 워크플로우, namespace 규칙과 각 호스트의 설치·업데이트 방식을 조합해 새 플러그인 프로젝트를 생성하는 것을 목표로 합니다.
+첫 초기화 커밋은 [GitHub의 `main` 브랜치](https://github.com/sh-ai-x/plugin-template)에
+push되어 있습니다.
 
-템플릿은 버전별 디렉터리로 관리하고, 단일 설치 스크립트에서 버전 이름을 선택해 새 플러그인을 생성합니다.
+## Quick start
 
-## Status
+```bash
+python3 scripts/install-template.py v1 my-plugin
+cd my-plugin
+```
 
-초기 저장소를 준비하는 단계입니다. 템플릿 버전과 생성 스크립트는 초기 push 이후 추가됩니다.
+버전 이름을 첫 번째 인자로 지정합니다. 새 템플릿은 `templates/v2/`처럼 별도 디렉터리로
+추가하며 기존 템플릿은 수정하지 않습니다.
 
-## Design goals
+```bash
+python3 scripts/install-template.py --help
+python3 scripts/install-template.py v1 my-plugin \
+  --plugin-version 0.1.0 \
+  --author-name "My Team" \
+  --repository https://github.com/my-org/my-plugin
+```
 
-- Claude Code와 Codex의 공통 컴포넌트는 한 번만 정의
-- 호스트별 manifest와 호환성 차이는 명시적인 adapter로 분리
-- 템플릿 버전은 서로 독립된 디렉터리로 보존
-- 설치·업데이트는 재현 가능한 단일 명령으로 실행
-- worktree와 MCP 설정은 비밀정보를 커밋하지 않는 구조로 제공
+스크립트는 이름을 lowercase kebab-case로 정규화하고, 대상 디렉터리가 이미 있으면 중단하며,
+세 호스트 manifest의 plugin name/version이 일치하는지 검사합니다.
 
-## Planned layout
+## Generated layout
 
 ```text
-templates/
-  v1/
-scripts/
-docs/
+my-plugin/
+├── plugin.json                 # Portable Agent Plugins manifest + AGY identity
+├── .claude-plugin/
+│   ├── plugin.json             # Claude Code manifest
+│   └── marketplace.json        # Claude marketplace entry
+├── .codex-plugin/plugin.json   # Codex compatibility overlay
+├── .agents/                    # AGY registration examples
+├── skills/                     # Shared workflow skills
+├── hooks/                      # Shared lifecycle config and scripts
+├── mcp.json                    # Portable MCP configuration
+├── .mcp.json                   # Claude-compatible MCP configuration
+├── worktrees/                  # Worktree policy
+└── bin/install-agy.sh          # Optional AGY installer
+```
+
+공통 구현은 root의 `skills/`, `hooks/`, `mcp.json`에 두고, 호스트별 차이는 adapter manifest와
+설치 스크립트에서만 처리합니다. `CLAUDE.md`나 `AGENTS.md`를 plugin context로 오해하지 않도록
+플러그인 instructions는 `skills/<name>/SKILL.md` 안에 둡니다.
+
+## Host compatibility
+
+| Concern | Claude Code | Codex | Antigravity (`agy`) |
+|---|---|---|---|
+| Identity | `.claude-plugin/plugin.json` | root `plugin.json` + `.codex-plugin/plugin.json` | root `plugin.json` |
+| Skills | root `skills/<name>/SKILL.md` | same | same via `.agents/skills.json` |
+| Hooks | `hooks/hooks.json` | same default path; review/trust before enable | adapter/optional |
+| MCP | `.mcp.json` | portable `mcp.json` | host-specific registration if needed |
+| Namespace | `/plugin:skill` style | plugin manifest + skill directory | plugin/skill paths |
+| Install | `claude plugin marketplace add/install` | local marketplace + `codex plugin add` | `bin/install-agy.sh` |
+| Update | marketplace update, then plugin update | cachebuster + reinstall; new thread | pull source or re-register workspace |
+
+`agy` support is intentionally an adapter: its registration format is not the Claude/Codex
+marketplace contract. The generated `bin/install-agy.sh` supports both global symlink installation and
+workspace-local `.agents/` registration.
+
+## Design decisions and sources
+
+- [Architecture and compatibility decisions](docs/architecture.md)
+- [Host install/update instructions](templates/v1/README.md)
+- [Official source references](docs/sources.md)
+
+The v1 template follows the official guidance that skills are self-contained `SKILL.md` directories,
+MCP is optional, hooks are lifecycle configuration, and plugin packages should keep portable files at
+the root. Claude Code and Codex both cache or copy installed plugins, so generated files do not rely on
+paths outside the plugin root.
+
+## Verify
+
+```bash
+python3 -m pytest -q
+TEST_ROOT=$(mktemp -d)
+python3 scripts/install-template.py v1 example-plugin --output "$TEST_ROOT"
+python3 -m json.tool "$TEST_ROOT/example-plugin/plugin.json" >/dev/null
 ```
 
 ## License
 
-License will be added with the first template release.
+MIT

@@ -16,12 +16,16 @@ dist/
 build/
 coverage/
 *.log
+__pycache__/
+.pytest_cache/
+.ruff_cache/
 
 # Generated template test projects
 .template-test/
 .tmp/
 
 # Local worktrees and agent state
+.dev-kit/
 .worktrees/
 .claude/local/
 .codex/local/

@@ -1,0 +1,17 @@
+{
+  "templateVersion": "v1",
+  "schemaVersion": "1.0.0",
+  "description": "Portable cross-agent plugin template for Claude Code, Codex, and Google Antigravity",
+  "generatedFiles": [
+    "plugin.json",
+    ".claude-plugin/plugin.json",
+    ".codex-plugin/plugin.json",
+    "skills/",
+    "hooks/",
+    "mcp.json",
+    ".mcp.json",
+    ".agents/",
+    "bin/install-agy.sh",
+    "LICENSE"
+  ]
+}
