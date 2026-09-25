@@ -11,7 +11,7 @@
 | `hooks/` | Shared lifecycle configuration and scripts |
 | `mcp/`, `mcp.json`, `.mcp.json` | MCP policy and host configurations |
 | `worktrees/` | Worktree policy |
-| `rules/`, `iron-laws/`, `guidelines/` | Operating contract |
+| `rules/` | Operating contract (incl. `iron-laws.md` and `guidelines.md`) |
 | `workflows/`, `agents/`, `scripts/` | Optional runbooks, agents, and shared helpers |
 | `docs/` | Maps and scope notes |
 

@@ -26,7 +26,7 @@ __PLUGIN_NAME__/
 ├── workflows/                  # Workflow runbooks
 ├── agents/                     # Optional agent definitions
 ├── scripts/                    # Deterministic project helpers
-├── iron-laws/ / guidelines/    # Invariants and working guidelines
+├── rules/                      # Shared operating contract (incl. iron-laws + guidelines)
 ├── docs/                       # Codebase map and scope notes
 └── LICENSE                     # MIT
 ```

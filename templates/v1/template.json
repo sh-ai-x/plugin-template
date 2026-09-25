@@ -17,8 +17,6 @@
     "workflows/",
     "agents/",
     "scripts/",
-    "iron-laws/",
-    "guidelines/",
     "docs/",
     "mcp.json",
     ".mcp.json",
