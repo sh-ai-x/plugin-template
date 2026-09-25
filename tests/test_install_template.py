@@ -34,11 +34,11 @@ def test_generates_v1_plugin_with_consistent_manifests(tmp_path: Path) -> None:
         "worktrees/README.md",
         "mcp/README.md",
         "rules/index.md",
+        "rules/iron-laws.md",
+        "rules/guidelines.md",
         "workflows/README.md",
         "agents/README.md",
         "scripts/README.md",
-        "iron-laws/index.md",
-        "guidelines/index.md",
         "docs/CODEBASE-MAP.md",
     ):
         assert (destination / relative).is_file()

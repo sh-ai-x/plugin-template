@@ -5,9 +5,7 @@ Antigravity; do not create a second host-specific copy of the rules.
 
 Read these files before making changes:
 
-- `iron-laws/index.md`
-- `guidelines/index.md`
-- `rules/index.md`
+- `rules/index.md` (includes `iron-laws.md` and `guidelines.md`)
 - `skills/README.md`
 - `hooks/index.md`
 - `worktrees/README.md`

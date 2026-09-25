@@ -2,9 +2,7 @@
 
 This file is intentionally short. Read the shared project contract before changing the plugin:
 
-- Invariants: `iron-laws/index.md`
-- Guidelines: `guidelines/index.md`
-- Rules: `rules/index.md`
+- Rules: `rules/index.md` (includes `rules/iron-laws.md` and `rules/guidelines.md`)
 - Skills: `skills/README.md`
 - Hooks: `hooks/index.md`
 - Worktrees: `worktrees/README.md`
